@@ -189,7 +189,7 @@
 \def\@school{Rice University}
 \def\@ctitle{\@title}
 \def\@department{Department Name}
-\def\@coverart{\includegraphics[width=4.5cm, keepaspectratio]{figs/RiceUStackedVertical_BLUE.pdf}}
+\def\@coverart{\includegraphics[width=4.5cm, keepaspectratio]{logos/RiceUStackedVertical_BLUE.pdf}}
 \def\@degree{Doctor of Philosophy} % or Master of Science
 \def\@committee{
     Committee Chair Name, Chair \\ Chair Title \and
@@ -203,7 +203,7 @@
 \def\@year{\number\year}
 
 % Logos and Graphics
-\newcommand{\ricelogo}{\includegraphics[height=1.8cm, keepaspectratio]{figs/Rice_Shield_280_Blue.eps}}
+\newcommand{\ricelogo}{\includegraphics[height=1.8cm, keepaspectratio]{logos/RiceStackedHoriz_Blue.pdf}}
 \newcommand{\art}{\@coverart}
 
 % Cover Page
