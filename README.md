@@ -58,14 +58,12 @@ Edit the `main.tex` file to set your personal information. The template handles 
 
 ---
 
-## 📜 Credits & License
+## 📜 Credits
 
 **Authors & Maintainers:**
 * [Hao-Tian Wei](https://github.com/htwei17)
 * [Nick Vrvilo](https://github.com/DaoWen) (Significant Refactoring & LaTeX2e Modernization)
 * Jan Erik Odegard (Original Creation)
-
-**License (of my part only; all rights reserved by Rice University and other authors & maintainers):** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
 
 **Copyright:** © 1995-2026 Rice University / Respective Authors & Maintainers.
 
