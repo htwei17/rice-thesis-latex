@@ -61,7 +61,7 @@ Edit the `main.tex` file to set your personal information. The template handles 
 ## 📜 Credits & License
 
 **Maintainer:** [Hao-Tian Wei](https://github.com/htwei17) (2026)  
-**Previous Maintainer:** [DaoWen](https://github.com/DaoWen/rice-thesis-latex) (2017)  
+**Previous Maintainer:** [Nick Vrvilo](https://github.com/DaoWen) (2017)  
 **Original Author:** Jan Erik Odegard (1995)
 
 * **License:** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
