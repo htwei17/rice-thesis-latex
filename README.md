@@ -60,11 +60,13 @@ Edit the `main.tex` file to set your personal information. The template handles 
 
 ## 📜 Credits & License
 
-**Maintainer:** [Hao-Tian Wei](https://github.com/htwei17) (2026)  
-**Previous Maintainer:** [Nick Vrvilo](https://github.com/DaoWen) (2017)  
-**Original Author:** Jan Erik Odegard (1995)
+**Authors & Maintainers:**
+* [Hao-Tian Wei](https://github.com/htwei17)
+* [Nick Vrvilo](https://github.com/DaoWen) (Significant Refactoring & LaTeX2e Modernization)
+* Jan Erik Odegard (Original Creation)
 
-* **License:** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
-* **Copyright:** © 1995-2026 Rice University / Respective Authors.
+**License:** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
+
+**Copyright:** © 1995-2026 Rice University / Respective Authors & Maintainers.
 
 This template is provided "as is" to help Rice University students. It is not an official product of the Rice University Office of Graduate and Postdoctoral Studies (GPS), though it is designed to meet their formatting guidelines. The authors provide no guarantee regarding strict adherence to current or future university formatting regulations, immunity from any compilation errors or crashes, or data integrity.
