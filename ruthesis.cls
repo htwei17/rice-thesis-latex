@@ -6,7 +6,7 @@
 %%%    Jan Erik Odegard <odegard@ece.rice.edu> (Rice ECE, 1995)
 %%%
 %%% CONTRIBUTORS & MAINTAINERS:
-%%%    DaoWen (2017) - GitHub: https://github.com/DaoWen/rice-thesis-latex
+%%%    Nick Vrvilo (2017) - GitHub: https://github.com/DaoWen/rice-thesis-latex
 %%%    Hao-Tian Wei (2026) - Modernization for XeLaTeX & BibLaTeX
 %%%
 %%% COPYRIGHT:
