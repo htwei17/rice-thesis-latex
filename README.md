@@ -65,7 +65,7 @@ Edit the `main.tex` file to set your personal information. The template handles 
 * [Nick Vrvilo](https://github.com/DaoWen) (Significant Refactoring & LaTeX2e Modernization)
 * Jan Erik Odegard (Original Creation)
 
-**License:** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
+**License (of my part so far; all rights reserved for original authors & maintainers):** [LaTeX Project Public License 1.3c (LPPL)](https://www.latex-project.org/lppl/)
 
 **Copyright:** © 1995-2026 Rice University / Respective Authors & Maintainers.
 
