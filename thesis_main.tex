@@ -1,197 +1,128 @@
-\documentclass[%
-% Thesis document class options (uncomment to enable):
-% masters,% master's thesis
-% proposal,% thesis proposal
-% twosided,% format as book
-]{ruthesis}
+% !TEX program = xelatex
+\documentclass[12pt]{ruthesis}
 
-\usepackage[utf8]{inputenc} % support unicode characters in output
-\usepackage[T1]{fontenc} % use modern font encoding
+% NOTE: The following packages are ALREADY loaded by ruthesis.cls:
+% - geometry, setspace, graphicx, xcolor, rotating
+% - amsmath, amssymb, amsthm, bm
+% - hyperref, caption, subcaption
+% - algorithm, algpseudocode, listings
+% - biblatex
 
-\usepackage{libertine} % use "Linux Libertine/Biolinum" fonts
-\usepackage[scaled=0.8]{DejaVuSansMono} % font for code
+% --------------------------------------------------------
+% 1. Preamble: Add extra packages only if needed
+% --------------------------------------------------------
 
-\usepackage[american]{babel} % American English hyphenation
+\usepackage{csquotes} % Recommended for BibLaTeX
+\usepackage{epigraph} % Chapter-start quotations
+\usepackage{booktabs} % Professional tables
+\usepackage[inline]{enumitem} % Enhanced list support
+\usepackage{ifdraft}  % Logic for draft mode
 
-\usepackage{csquotes} % fancy quotations
-\usepackage{epigraph} % chapter-start quotations
-
-\usepackage{mathtools}
-\usepackage{amssymb}
-\usepackage[libertine]{newtxmath} % consistent math font
-
-% microtype magically eliminates many over/under-full problems
-\usepackage[kerning=true,verbose=silent]{microtype}
-\SetExtraKerning[unit=space]{encoding={*}}{
-  % add thin space to either side of em-dashes
-  \textemdash  = {400,400}
-}
-
-\usepackage{xspace} % save trailing space on custom macros
-
-% For a simple online WYSIWYG LaTeX table generator,
-% try http://www.tablesgenerator.com/latex_tables/.
-\usepackage{booktabs} % prettier tables
-
-\usepackage{caption}
-\usepackage{subcaption}
-
-% Fix subfigure references
-% (see http://tex.stackexchange.com/questions/75014)
-\captionsetup[subfigure]{subrefformat=simple,labelformat=simple}
-\renewcommand\thesubfigure{(\alph{subfigure})}
-
-\usepackage{setspace} % use for line spacing options
-
-\usepackage[x11names]{xcolor}
-\usepackage{graphicx}
-\usepackage{copyrightbox} % for attributing figures
-
-\usepackage[inline]{enumitem} % enhanced list support
-\setlist{noitemsep} % no extra space between items in a list
-
-\usepackage[algochapter,vlined,linesnumbered]{algorithm2e}
-\SetAlCapSty{textnormal} % default is textbf
-
-\usepackage{listings}
-\lstset{%
-  basicstyle=\ttfamily\small,
-  keywordstyle=\ttfamily\small\bfseries,
-  commentstyle=\small\slshape,
-  numbers=left,
-  numberstyle=\ttfamily\footnotesize,
-  stepnumber=1,
-  frame=lines,
-  float=htbp,
-  numberbychapter=true
-}
-
-\usepackage{ifdraft}
-
-% show overfull boxes (without enabling draft mode)
-% (disable in "final draft" mode)
-\ifoptionfinal{}{
-\overfullrule=5pt
-}
-
-%\usepackage{etoolbox} % Patch commands
-
+% FixMe Package (Useful for "To Do" notes during drafting)
 \usepackage{fixme}
-\fxsetup{
-    lang=english,
-    layout=inline, % options are: inline, margin, footnote, pdfnote, pdfmargin
-    theme=color, % plain, signature, color or colorsig
-    envlayout=color % plain, signature, color or colorsig
-}
-\renewcommand{\englishlistfixmename}{List of Things to Fix}
+\fxsetup{theme=color, mode=multiuser}
+\FXRegisterAuthor{rm}{arm}{RM} % Register author "RM" (Randall Munroe)
 
-% Make a special fix-me command for citations
-% (disable in "final draft" mode)
-\ifoptionfinal{\newcommand{\fxcite}[1]{\unskip}}{%
-\fxsetup{status=draft} % explicitly set "draft" when not in "final" mode
-\newcommand{\fxcite}[1]%
-  {{\color{fxwarning}[\fxwarning*[layout=margin,author=]{cite #1}{?}]}}
-}
+% CleverRef (Must be loaded AFTER hyperref, which is loaded by the class)
+\usepackage[nameinlink,noabbrev]{cleveref} 
 
-\usepackage{cite}
+% --------------------------------------------------------
+% 2. Bibliography Setup
+% --------------------------------------------------------
+% Point this to your .bib file
+\addbibresource{thesis_main.bib}
 
-\usepackage{hyperref}
-
-\usepackage{footnotebackref}
-
-\usepackage[nameinlink,noabbrev]{cleveref} % comes after hyperref
-
-\urlstyle{rm} % Don't use monospace font for URLs!
-
+% --------------------------------------------------------
+% 3. Thesis Metadata
+% --------------------------------------------------------
 \title{Everybody Out: Moving All Humans Off-Planet}
 \author{Randall Munroe}
 \department{XKCD Science}
 \school{Rice University}
+\degree{Doctor of Philosophy}
 
+% Committee Members
 \committee{
-        Person One, Chair \\
-        Professor of Computer Science \\
-        Professor of Electrical and Computer~Engineering
-        \and
-        Person Two \\
-        Professor of Computer Science
-        \and
-        Person Three \\
-        Professor of Electrical and Computer~Engineering
+    Person One, Chair \\
+    Professor of Physics \\
+    Professor of Electrical and Computer Engineering
+    \and
+    Person Two \\
+    Professor of Physics
+    \and
+    Person Three \\
+    Professor of Electrical and Computer Engineering
 }
 
 \address{Houston, Texas}
-\donemonth{May} \doneyear{2017}
-\makeindex
+\donemonth{May} 
+\doneyear{2026}
 
-% Add thesis info to the PDF meta data
-\makeatletter
-\hypersetup{
-  hidelinks,
-  pdfauthor={\@author},
-  pdftitle={\@title},
-  pdfsubject={{\@degreeabbr} Thesis},
-  %pdfkeywords={Your Thesis Keywords},
-  pdfproducer={LaTeX, with the hyperref package},
-  pdfcreator={pdflatex}
-}
-\makeatother
-
-% If compiling the whole thesis is taking too long,
-% we can include just one chapter instead to speed it up.
-%\includeonly{chapters/???}
-
+% --------------------------------------------------------
+% 4. Document Body
+% --------------------------------------------------------
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Front-matter
+% -- Front Matter (Roman numerals, Title pages) --
+\begin{frontmatter}
+    \makecover      % The abstract/cover shield page
+    \maketitle      % The signature page
+    
+    % Include frontmatter content files
+    \include{frontmatter/dedication} 
+    \include{frontmatter/abstract}
+    \include{frontmatter/ack}
+    
+    % Example of manual dedication if file missing:
+    \dedication
+        To my Physics teachers, who told me this wasn't possible.
+    \enddedication
 
-  \begin{frontmatter}
-   \makecover % fancy cover page
-   \maketitle % title page for thesis (with signatures)
-   \include{frontmatter/dedication}
-   \include{frontmatter/abstract}
-   \include{frontmatter/ack}
-   \tableofcontents
-   %\listofalgorithms
-   \listoffigures
-   %\listoflistings
-   %\listoftables
-   %\listoffixmes
-  \end{frontmatter}
+    \tableofcontents
+    \listoffigures
+    \listoftables
+\end{frontmatter}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Chapters
+% -- Main Matter (Arabic numerals) --
+% \include{chapters/intro}
+% \include{chapters/analysis}
+% \include{chapters/conclusions}
 
-\include{chapters/intro}
-\include{chapters/analysis}
-\include{chapters/conclusions}
+% Example Chapter Content (For testing)
+\chapter{Introduction}
+This is a test citation \cite{texbook}. Here is an algorithm:
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Appendices
+\begin{algorithm}
+\caption{Escape Plan}
+\begin{algorithmic}[1]
+    \Require A working rocket
+    \Ensure Humans are off-planet
+    \State $x \gets \text{population}$
+    \While{$x > 0$}
+        \State Launch rocket
+        \State $x \gets x - 1$
+    \EndWhile
+\end{algorithmic}
+\end{algorithm}
 
+\chapter{Methodology}
+See \cref{fig:test} for details.
+
+\begin{figure}[ht]
+    \centering
+    % Ensure you have a file named 'example-image' or delete this block
+    \includegraphics[width=0.5\textwidth]{example-image} 
+    \caption{A test figure}
+    \label{fig:test}
+\end{figure}
+
+% -- Appendices --
 \appendix
-\newpage\cleardoublepage
+\chapter{Additional Data}
+Some extra stuff here.
 
-% This adds a folded-section in the PDF Table of Contents
-% for the appendices. Note that level -1 corresponds to \part.
-\phantomsection
-\pdfbookmark[-1]{Appendices}{part:appendices}
-
-\include{appendices/ink}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography
-
-\bibliographystyle{ieeetr}
-\renewcommand{\bibname}{References}
-
-\newpage\cleardoublepage
-\phantomsection
-\addcontentsline{toc}{part}{\bibname}
-
-\begin{raggedright}
-\bibliography{thesis_main}
-\end{raggedright}
+% -- Bibliography --
+\nocite{*}
+\printbibliography[heading=bibintoc, title=References]
 
 \end{document}

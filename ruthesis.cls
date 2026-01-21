@@ -1,143 +1,339 @@
 %%% =========================================================================
 %%% File Name: ruthesis.cls
-%%% Last Modification Date: %G%     %U%
-%%% Current Version: %M%    %I%
-%%% File Creation Date: Tue Nov 21 11:09:28 1995
-%%% Authors: Jan Erik Odegard  <odegard@ece.rice.edu>
-%%%          Nick Vrvilo       <nick.vrvilo@alumni.rice.edu>
+%%% Title: Rice University Thesis Class
 %%%
-%%% Copyright: All software, documentation, and related files in this
-%%%            distribution are Copyright (c) 1995-2017 Rice University
+%%% ORIGINAL AUTHOR:
+%%%    Jan Erik Odegard <odegard@ece.rice.edu> (Rice ECE, 1995)
 %%%
+%%% CONTRIBUTORS & MAINTAINERS:
+%%%    DaoWen (2017) - GitHub: https://github.com/DaoWen/rice-thesis-latex
+%%%    Hao-Tian Wei (2026) - Modernization for XeLaTeX & BibLaTeX
+%%%
+%%% COPYRIGHT:
+%%%    (c) 1995-2026 Rice University
+%%%    (c) 1995 Jan Erik Odegard
+%%%    (c) 2017 DaoWen
+%%%    (c) 2026 Hao-Tian Wei
+%%%
+%%% HISTORY:
+%%%    1995/11/21: Original port from Rice Thesis style to LaTeX2e (Odegard).
+%%%    2017/03/01: PDFLaTeX support, and file restructuring (DaoWen).
+%%%    2026/01/20: Major refactor for XeLaTeX, BibLaTeX,
+%%%                Chinese font support, and cleanup.
 %%% =========================================================================
-%%% This is a significant refactoring of Dr. Odegard's 1995 port
-%%% of this thesis template to LaTeX2e. This new version uses more
-%%% modern LaTeX features and packages. Dr. Odegard, who currently works
-%%% in the Ken Kennedy Institute at Rice, has given explicit permission
-%%% to redistribute these changes to his version of the template,
-%%% We hope this updated template will be useful to future Rice students!
-%%%
-%%% =========================================================================
-%%%
-%%% This is a port of the original Rice thesis style for LaTeX to
-%%% LaTeX2e. The port is still not complete but it does work with a
-%%% few minor hacks in your actual documant (e.g., the linespacing for
-%%% tables is not right but can be fixed by inserting the command
-%%% '\linespacing{1}' inside the 'table' environemnt as nedded for
-%%% tabular data).
-%%%
-%%% This is not a clean and optimal LaTeX2e class port yet. I am working
-%%% on that but this class file has been used for a PhD thesis that did
-%%% pass a preliminary inspection by the graduate office.
-%%%
-%%% I would appreciate any help/comments and improvements. The goal is
-%%% to make this an official Rice thesis style for LaTeX2e that can
-%%% exist in parallel with the old LaTeX thesis style.
-%%%
-%%\NeedsTeXFormat{LaTeX2e}[1994/12/01]
-\ProvidesClass{ruthesis}[2017/05/15 Thesis Class, Computer Science, Rice University, nv4]
 
-\newif\if@ruthesis
-\@ruthesistrue
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\ProvidesClass{ruthesis}[2026/01/20 v2.0 Modernized Rice Thesis Class]
 
-%\DeclareOption{12pt}{\typeout{12pt mode selected but not implemented}}
+% -------------------------------------------------------------------------
+% 1. OPTION HANDLING
+% -------------------------------------------------------------------------
+% Toggle for citation compression
+\newif\if@compresscitations
+\@compresscitationstrue % DEFAULT IS NOW TRUE (Compressed: [1-3])
 
-\DeclareOption{draft}{
-  \typeout{DRAFT MODE}
-  \PassOptionsToClass{\CurrentOption}{report}
-}
+% Toggle for CJK support
+\newif\if@usecjk
+\@usecjkfalse % Default is OFF
+\DeclareOption{cjk}{\@usecjktrue}
 
-\newif\ifruthesis@proposal \ruthesis@proposalfalse
-\DeclareOption{proposal}{\ruthesis@proposaltrue}
+% Option to turn citation compression OFF if explicitly desired
+\DeclareOption{nocompress}{\@compresscitationsfalse}
 
-\newif\ifruthesis@masters \ruthesis@mastersfalse
-\DeclareOption{masters}{\ruthesis@masterstrue}
-
-\DeclareOption{twoside}{
-  \PassOptionsToClass{\CurrentOption}{report}
-}
-\DeclareOption{openright}{
-  \PassOptionsToClass{\CurrentOption}{report}
-}
+\DeclareOption{draft}{\typeout{DRAFT MODE}}
+\DeclareOption{12pt}{\typeout{12pt mode selected implicitly by LoadClass}}
 
 \ProcessOptions
 
+% Load Base Class
 \LoadClass[12pt]{report}
-\RequirePackage{graphicx}
 
-%%% \def\ds@draft{\@drafttrue\overfullrule5pt}
-%%% \def\ps@hightop{\let\@mkboth\@gobbletwo
-%%%   \def\@oddhead{\hfill\vbox to0pt{\vskip-.4in\hbox{\thepage}\vss}\hfill}
-%%%   \def\@oddfoot{}}
-%%% \def\now{%
-%%%   {\count255=\time\divide\count255 by60
-%%%     \ifnum\count255<10 0\fi\number\count255:\multiply\count255 by60
-%%%     \advance\count255 by-\time\ifnum\count255>-10 0\fi\number -\count255}}
-%%% \def\ps@draft{%
-%%%   \ps@hightop\def\@oddhead{{\normalsize\today,\
-%%%       {\small\bf DRAFT},\ \now\hfil\thepage}}}
-%%% \if@draft\ps@draft\raggedbottom\typeout{DRAFT MODE}\else\ps@empty\fi
+% -------------------------------------------------------------------------
+% 2. CORE PACKAGES & LAYOUT
+% -------------------------------------------------------------------------
+\RequirePackage{ifthen}
+
+% Modern Line Spacing
+\RequirePackage{setspace}
+\doublespacing 
+\def\linespacing#1{\setstretch{#1}}
+
+% Modern Margins
+\RequirePackage{geometry}
+\geometry{
+    letterpaper,
+    margin=1in,         
+    bindingoffset=0.5in,
+    headheight=15pt     
+}
+
+% -------------------------------------------------------------------------
+% 3. SCIENTIFIC & MATH PACKAGES
+% -------------------------------------------------------------------------
+% Basic Math & Symbols
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{latexsym}
+\RequirePackage{wasysym}
+\RequirePackage{braket}  % Quantum mechanics notation
+\RequirePackage{bm}      % Bold Math
+
+% Algorithms
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+% Rename "Require/Ensure" to "Input/Output" (Standard in CS/ECE)
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% Graphics & Colors
+\RequirePackage{xcolor}  % Replaces 'color'
+\RequirePackage{graphicx}% Replaces 'epsfig', 'epsf', 'graphics'
+\RequirePackage{rotating}% For rotated figures/tables
+\RequirePackage{textcomp}% Extra symbols
+
+% Subfigures (Modern Replacement)
+% 'subfigure' is obsolete. 'subcaption' is the modern standard.
+\RequirePackage{subcaption} 
+
+% -------------------------------------------------------------------------
+% 4. TYPOGRAPHY & FONTS (XeLaTeX specific)
+% -------------------------------------------------------------------------
+\RequirePackage{fontspec}        
+\RequirePackage{microtype}      
+
+% -- Main English Font --
+\setmainfont{TeX Gyre Termes}
+% Alternative: \setmainfont{Times New Roman}
 
 
-%%% Do we need this?
-%\renewcommand{\normalsize}{\fontsize{12}{15}\selectfont}
-
-%\lineskip 1pt
-%\normallineskip 1pt
-% TODO - use setspace instead?
-\def\baselinestretch{1.5}
-
-\if@twoside
- \oddsidemargin 21pt
- \evensidemargin 59pt
- \marginparwidth 85pt
-\else
- \oddsidemargin .5in
- \evensidemargin 0in
- \marginparwidth .8in
+% -- Chinese Font Settings --
+% Load Chinese font if the [cjk] option is passed
+\if@usecjk
+  \RequirePackage{xeCJK}
+  \setCJKmainfont[
+      BoldFont={FandolHei-Regular}, 
+      ItalicFont={FandolKai-Regular}
+  ]{FandolSong-Regular}
 \fi
-\marginparsep .1in
 
-%\advance\oddsidemargin -.0625in \advance\evensidemargin -.0625in
+% -------------------------------------------------------------------------
+% 5. BIBLIOGRAPHY (BibLaTeX)
+% -------------------------------------------------------------------------
+% Logic: Default is Compressed (numeric-comp). 
+% If 'nocompress' is passed, use standard numeric.
 
-\topmargin 0in
+\if@compresscitations
+  % IEEE style uses 'numeric-comp' internally. 
+  % We explicitly force citestyle to numeric-comp to guarantee [1-3].
+  \RequirePackage[
+      backend=biber,
+      style=ieee,         
+      citestyle=numeric-comp, % FORCE COMPRESSION
+      natbib=true,       
+      sorting=none       
+  ]{biblatex}
+\else
+  % Verbose style [1], [2], [3]
+  \RequirePackage[
+      backend=biber,
+      style=numeric,     
+      natbib=true,       
+      sorting=none       
+  ]{biblatex}
+\fi
 
-\headheight \baselineskip
-\headsep 1.5\baselineskip
+% Fix line spacing for the bibliography (Single spaced)
+\AtBeginBibliography{\linespacing{1}}
 
-%%My fix for the bottom-center page numbering - Psycho.
+% -------------------------------------------------------------------------
+% 6. HYPERLINKS & COLORS
+% -------------------------------------------------------------------------
+\RequirePackage[
+    pdfusetitle,       
+    bookmarksnumbered, 
+    hidelinks          
+]{hyperref}
 
-%\footheight \baselineskip
-%\footskip 2.5\baselineskip
+\definecolor{DeepTeal}{rgb}{0.0, 0.52, 0.43}   % Deep Teal
+% Official Rice University Colors
+\definecolor{RiceBlue}{HTML}{00205B}
+\definecolor{RiceGray}{HTML}{7C7E7F}
 
-\textheight 9in
-\advance\textheight -\headheight
-\advance\textheight -\headsep
-\textwidth 6in
+\hypersetup{
+    colorlinks=true,
+    linkcolor=RiceBlue,
+    citecolor=DeepTeal,
+    urlcolor=magenta,
+    filecolor=cyan
+}
 
-\columnsep 10pt
-\columnseprule 0pt
+% -------------------------------------------------------------------------
+% 7. RICE UNIVERSITY FRONTMATTER MACROS
+% -------------------------------------------------------------------------
+\newif\if@ruthesis
+\@ruthesistrue
 
-\footnotesep 11.4pt
+% Variables
+\def\school#1{\gdef\@school{#1}}
+\def\ctitle#1{\gdef\@ctitle{#1}}
+\def\department#1{\gdef\@department{#1}}
+\def\coverart#1{\gdef\@coverart{#1}}
+\def\degree#1{\gdef\@degree{#1}}
+\def\committee#1{\gdef\@committee{#1}}
+\def\address#1{\gdef\@address{#1}}
+\def\donemonth#1{\gdef\@month{#1}}
+\def\doneyear#1{\gdef\@year{#1}}
 
-\skip\footins 18pt plus 12pt minus 6pt
+% Defaults
+\def\@school{Rice University}
+\def\@ctitle{\@title}
+\def\@department{Department Name}
+\def\@coverart{\includegraphics[width=4.5cm, keepaspectratio]{figs/RiceUStackedVertical_BLUE.pdf}}
+\def\@degree{Doctor of Philosophy} % or Master of Science
+\def\@committee{
+    Committee Chair Name, Chair \\ Chair Title \and
+    Committee Member 1 \\ Title \and
+    Committee Member 2 \\ Title
+}
+\def\@address{Houston, Texas}
+\def\@month{\ifcase\month ?\or January\or February\or March\or April\or
+ May\or June\or July\or August\or September\or October\or
+ November\or December\fi}
+\def\@year{\number\year}
 
-\floatsep 24pt plus 6pt minus 6pt
+% Logos and Graphics
+\newcommand{\ricelogo}{\includegraphics[height=1.8cm, keepaspectratio]{figs/Rice_Shield_280_Blue.eps}}
+\newcommand{\art}{\@coverart}
 
-\textfloatsep 36pt plus 10pt minus 10pt
+% Cover Page
+\def\makecover{%
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \linespacing{1}
+    \null
+    \vfill % --- Top Vertical Flex ---
+    \begin{center}
+      % 1. THE TITLE
+      {\fontsize{24}{30}\selectfont \bfseries \scshape \color{RiceBlue} \@ctitle \par}
+      \vspace{1.5em}
+      % 2. THE HORIZON LINE
+      {\color{RiceGray}\rule{0.5\textwidth}{0.5pt}}
+      \vspace{2em}
+      % 3. THE AUTHOR
+      \\{\Large \bfseries \@author \par}
+      \vspace{4em}
+      % 4. THE SHIELD
+      \art
+    \end{center}
+    \vfill % --- Bottom Vertical Flex ---
+    % 5. THE FOOTER METADATA
+    \begin{center}
+      {\color{RiceGray}\large \textsc{\@school}} \par
+      \vspace{0.8em}
+      {\small Thesis Submitted for the Degree of} \par
+      \vspace{0.4em}
+      {\large \bfseries \@degree} \par
+      \vspace{0.2em}
+      {\small Department of \@department} \par
+      \vspace{2em}
+      % Location and Date separated by a dot
+      {\small \@address \ \ $\cdot$ \ \ \@month \ \@year}
+    \end{center}
+    \cleardoublepage
+  \end{titlepage}
+}
 
-\intextsep 24pt plus 6pt minus 6pt
+% Title Page
+\def\maketitle{%
+\begin{titlepage}
+  \null\linespacing{1}\setcounter{page}{1}\vfill
+  \vbox to 0pt{\vss\vbox to 8.75in{\parskip 0pt \parindent 0pt\centering
+      {\large \uppercase\expandafter{\@school} \par} \vskip 0pt plus 3fil
+      {\Large \bf \@title \par} \vskip 0pt plus 1.3fil
+      {\large by \par} \vskip 0pt plus 1fil
+      {\large \bf \@author \par} \vskip 0pt plus 3fil
+      {\large \sc A Thesis Submitted \\
+        in Partial Fulfillment of the \\
+        Requirements for the Degree \par} \vskip 0pt plus 1.1fil
+      {\large \bf \@degree \par} \vskip 0pt plus 4.5fil
+      \begingroup
+      \leftskip .5\textwidth \rightskip 0pt plus 1fil
+      {\sc Approved, Thesis Committee: \par} \vskip 2.5em
+      \moveright\leftskip\vbox{\hrule width \leftskip}
+      \def\and{\par \vskip 2.25em minus 1em\moveright\leftskip%
+        \vbox{\hrule width \leftskip}}
+      \@committee \par
+      \endgroup \vskip 0pt plus 2fil
+      {\large \@address \par} \vskip 0pt plus .8fil
+      {\large \@month, \@year \par}}}\cleardoublepage
+\end{titlepage}}
 
+% Abstract
+\def\abstract{\cleardoublepage \pagestyle{empty} \global\@topnum\z@
+ \@afterindentfalse \begingroup
+ \def \baselinestretch{1.7} \parskip \z@ \parindent \z@ \par
+ \null \centering {{\center{ABSTRACT}}} \vskip .4in
+\@title \vskip .4in  by \vskip .4in \@author \vskip .4in \par
+\endgroup \setcounter
+ {footnote}{0}\def\thefootnote{\fnsymbol{footnote}}\addcontentsline
+ {toc}{frontmatter}{\protect\numberline {\hfil}Abstract}}
+
+\def\endabstract{\setcounter{footnote}{0}
+  \pagestyle{plain}\thispagestyle{empty}}
+
+% Acknowledgments
+\def\acknowledge{\chapter*{Acknowledgments}\thispagestyle{empty}
+ \setcounter{footnote}{0}
+ \addcontentsline{toc}{frontmatter}{\protect\numberline
+ {\hfil}Acknowledgments}}
+\def\endacknowledge{\setcounter{footnote}{0}}
+
+% Dedications
+\def\dedication{
+  \cleardoublepage
+  \thispagestyle{empty}
+  \vspace*{\fill}
+  \begin{center}
+  \itshape
+}
+\def\enddedication{
+  \end{center}
+  \vspace*{\fill}
+  \cleardoublepage
+}
+
+% Publications
+\def\publications{
+  \cleardoublepage             
+  \chapter*{List of Publications} 
+  \thispagestyle{plain}        
+  \addcontentsline{toc}{frontmatter}{\protect\numberline{\hfil}List of Publications}
+}
+\def\endpublications{\par\vfil\newpage}
+
+% Preface
+\def\preface{\chapter*{Preface} \thispagestyle{empty}
+ \setcounter{footnote}{0}
+ \addcontentsline{toc}{frontmatter}{\protect\numberline
+ {\hfil}Preface}}
+\def\endpreface{\setcounter{footnote}{0}}
+
+% General Frontmatter Utilities
+\def\frontmatter{\relax}
+\def\endfrontmatter{\cleardoublepage
+  \pagenumbering{arabic}\def\thefootnote{\arabic{footnote}}}
+
+% -------------------------------------------------------------------------
+% 8. TABLE OF CONTENTS & LISTS FORMATTING
+% -------------------------------------------------------------------------
 \def\@pnumwidth{1.55em}
 \def\@tocrmarg {2.55em plus 1fil}
 \def\@dotsep{4.5}
 \setcounter{tocdepth}{2}
 
 \def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi%
- \providecommand\pdfbookmark[2]{}% if hyperref is not loaded
- \pdfbookmark{\contentsname}{toc}%
- \chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}} \thispagestyle{empty}
+ \fi\chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}} \thispagestyle{empty}
  \@starttoc{toc}\if@restonecol\twocolumn\fi}
 
 \def\l@part#1#2{\addpenalty{-\@highpenalty}
@@ -145,19 +341,19 @@
  \begingroup
  \@tempdima 3em
  \parindent \z@ \rightskip \@pnumwidth
- \parfillskip -\@pnumwidth
+ \parfillskip -\@pnumwidth    
  {\large \bf
  \leavevmode
  #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
  \nobreak
  \endgroup}
 
-\def\l@chapter#1#2{\pagebreak[3]
+\def\l@chapter#1#2{\pagebreak[3] 
  \vskip 1.0em plus 1pt
  \@tempdima 1.5em
  \begingroup
- \parindent \z@ \rightskip \@pnumwidth
- \parfillskip -\@pnumwidth
+ \parindent \z@ \rightskip \@pnumwidth 
+ \parfillskip -\@pnumwidth 
  \parskip \z@
  \large \bf
  \leavevmode
@@ -165,170 +361,47 @@
  \hskip -\leftskip
  #1\nobreak\hfil \nobreak\hbox to\@pnumwidth{\hss #2}\par
  \endgroup}
+ 
+\def\l@section{\@dottedtocline{1}{1.5em}{2.3em}}
+\def\l@subsection{\@dottedtocline{2}{3.8em}{3.2em}}
+\def\l@subsubsection{\@dottedtocline{3}{7.0em}{4.1em}}
+\def\l@paragraph{\@dottedtocline{4}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
 
-% provide list of code listings based on report.cls definition of listoffigures
-\newcommand{\listcodename}{List of Code Listings}
-\newcommand{\listofcode}{%
-  \begingroup%
-  \let\old@starttoc\@starttoc%
-  \renewcommand{\@starttoc}[1]{\old@starttoc{lol}}%
-  \renewcommand{\listfigurename}{\listcodename}%
-  \listoffigures%
-  \endgroup%
-}
+\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{Illustrations\@mkboth
+ {ILLUSTRATIONS}{ILLUSTRATIONS}} \thispagestyle{empty}
+ \addcontentsline{toc}{frontmatter}{\protect\numberline
+ {\hfil}List of Illustrations}\@starttoc{lof}\if@restonecol
+ \twocolumn\fi}
+
+\def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+
+\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{Tables\@mkboth
+ {TABLES}{TABLES}} \thispagestyle{empty}
+ \addcontentsline{toc}{frontmatter}{\protect\numberline
+ {\hfil}List of Tables}\@starttoc{lot}\if@restonecol
+ \twocolumn\fi}
+
+\let\l@table\l@figure
 
 \def\l@frontmatter#1#2{\pagebreak[3]
  \@tempdima 1.5em \begingroup
- \parindent \z@ \rightskip \@pnumwidth
- \parfillskip -\@pnumwidth
+ \parindent \z@ \rightskip \@pnumwidth 
+ \parfillskip -\@pnumwidth 
  \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}\par
  \endgroup}
 
-\def\titlepage{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \else \newpage \fi \thispagestyle{empty}\c@page\z@}
+% Captions spacing fix
+\renewcommand{\fnum@figure}{Figure \thefigure \linespacing{1}}
+\renewcommand{\fnum@table}{Table \thetable \linespacing{1}}
 
-\def\endtitlepage{\if@restonecol\twocolumn \else \newpage \fi}
+% -------------------------------------------------------------------------
+% 9. SECTIONING HEADERS & PAGE STYLES
+% -------------------------------------------------------------------------
 
-\def\makecover{%
-\pagenumbering{gobble}%
-\begin{titlepage}
-  \null\linespacing{1}\setcounter{page}{1}\vfill
-  \vbox to 0pt{\vss\vbox to 8.75in{\parskip 0pt \parindent 0pt
-      \begin{center}
-      {\includegraphics[height=1.6in]{logos/rice-owl.png} \par}
-      \vskip 8pt
-      {\includegraphics[width=4.4in]{logos/rice-university.png} \par}
-      \vskip 16pt
-      \rule{\textwidth}{2mm}
-      \vskip 3pt
-      {\Huge \textsc{\textbf{\@ctitle}} \par}
-      \vskip 6pt
-      \rule{\textwidth}{2mm}
-      \vskip 12pt
-      {\large Thesis by \par}
-      {\Large \bf \@author \par}
-      \vfill
-      \end{center}
-      \begin{minipage}{\textwidth}
-        \begin{minipage}{0.3\textwidth}
-          \centering
-          \includegraphics[width=1.5in]{logos/rice-logo-small.jpg}
-        \end{minipage}%
-        \begin{minipage}{0.7\textwidth}
-        {Thesis for the Degree of \@degree \par}
-        {Department of \@department \par}
-        {\@school\ (\@address)\: \@month, \@year \par}
-        \end{minipage}
-    \end{minipage}}}
-    \cleardoublepage
-\end{titlepage}}
-
-\def\maketitle{%
-\pagenumbering{roman}%
-\def\sigline{%
-\ifruthesis@proposal
-  % no signature lines for proposal
-\else
-  \moveright\leftskip \vbox{\hrule width \leftskip}%
-\fi}%
-\begin{titlepage}
-  \null\linespacing{1}\setcounter{page}{1}\vfill
-  \vbox to 0pt{\vss\vbox to 8.75in{\parskip 0pt \parindent 0pt\centering
-      {\large \uppercase\expandafter{\@school} \par} \vskip 0pt plus 3fil
-      {\Large \bf \@title \par} \vskip 0pt plus 1.3fil
-      {\large by \par} \vskip 0pt plus 1fil
-      {\large \bf \@author \par}
-      \ifruthesis@proposal
-        \vskip 0pt plus 1.3fil
-        {\large A {\@degreeabbr} Thesis Proposal \par}
-        \vskip 0pt plus 4.5fil
-      \else
-        \vskip 0pt plus 3fil
-        {\large \sc A Thesis Submitted \\
-          in Partial Fulfillment of the \\
-          Requirements for the Degree \par}
-        \vskip 0pt plus 1.1fil
-        {\large \bf \@degree \par} \vskip 0pt plus 4.5fil
-      \fi
-      \begingroup
-      \leftskip .5\textwidth \rightskip 0pt plus 1fil
-      {\sc \ifruthesis@proposal{}\else{Approved, }\fi Thesis Committee: \par}
-      \vskip 2.5em
-      \sigline
-      \def\and{\par \vskip 2.25em minus 1em\sigline}
-      \@committee \par
-      \endgroup \vskip 0pt plus 2fil
-      {\large \@address \par} \vskip 0pt plus .8fil
-      {\large \@month, \@year \par}}}\cleardoublepage
-\end{titlepage}}
-
-\newif\if@bigcommittee \@bigcommitteefalse
-
-\def\school#1{\gdef\@school{#1}}
-\def\ctitle#1{\gdef\@ctitle{#1}}
-\def\department#1{\gdef\@department{#1}}
-\def\degree#1{\gdef\@degree{#1}}
-\def\committee#1{\gdef\@committee{#1}}
-\def\bigcommittee#1{\@bigcommitteetrue\gdef\@committee{#1}}
-\def\address#1{\gdef\@address{#1}}
-\def\donemonth#1{\gdef\@month{#1}}
-\def\doneyear#1{\gdef\@year{#1}}
-
-\def\@school{Rice University}
-\def\@ctitle#1{\@title}
-\def\@department{Computer Science}
-\def\@degree{\ifruthesis@masters{Master of Science}\else{Doctor of Philosophy}\fi}
-\def\@degreeabbr{\ifruthesis@masters{Master's}\else{PhD}\fi}
-\def\@committee{member 1, Chair \\ prof \and
- member 2 \\ prof \and member 3 \\ prof}
-\def\@address{Houston, Texas}
-\def\@month{\ifcase\month ?\or January\or February\or March\or April\or
- May\or June\or July\or August\or September\or October\or
- November\or December\fi}
-\def\@year{\number\year}
-
-\def\dedication{\cleardoublepage \thispagestyle{empty}%
-\vspace*{12em}\begin{center}\begin{minipage}{0.33\textwidth}\centering\itshape }
-
-\def\enddedication{\end{minipage}\end{center} \clearpage }
-
-\def\abstract{\cleardoublepage \pagestyle{empty} \global\@topnum\z@
- \@afterindentfalse \begingroup
- \def \baselinestretch{1.7} \parskip \z@ \parindent \z@ \par
- \providecommand\pdfbookmark[2]{}% if hyperref is not loaded
- \pdfbookmark{Abstract}{abstract}%
- \providecommand\phantomsection{}% if hyperref is not loaded
- \phantomsection
- \null \centering {{\center{ABSTRACT}}} \vskip .4in
- \@title \vskip .4in  by \vskip .4in \@author \vskip .4in \par
- \endgroup
- \setcounter{footnote}{0}\def\thefootnote{\arabic{footnote}}}
-
-\def\endabstract{\setcounter{footnote}{0}
-  \pagestyle{plain}\thispagestyle{empty}}
-
-\def\acknowledge{%
- \providecommand\pdfbookmark[2]{}% if hyperref is not loaded
- \pdfbookmark{Acknowledgments}{acknowledgments}%
- \chapter*{Acknowledgments}\thispagestyle{empty}
- \setcounter{footnote}{0}}
-
-\def\endacknowledge{\setcounter{footnote}{0}}
-
-\def\preface{\chapter*{Preface} \thispagestyle{empty}
- \setcounter{footnote}{0}}
-
-\def\endpreface{\setcounter{footnote}{0}}
-
-\def\frontmatter{\relax}
-\def\endfrontmatter{\cleardoublepage
-  \pagenumbering{arabic}%
-  \def\thefootnote{\arabic{footnote}}}
-\def\toclevel@frontmatter{0}
-
-\def\linespacing#1{\def\baselinestretch{#1} \let\@tempa\@currsize
- \let\@currsize\relax \@tempa}
-
+% -- Chapter Heading Formatting --
 \def\@makechapterhead#1{\begingroup
  \def \baselinestretch{1} \parskip \z@ \parindent \z@ \par
  \Large\bf \null \vskip 1.5ex \centering
@@ -341,7 +414,7 @@
  \Large \bf #1\par \endgroup \nobreak \vskip .6in\relax}
 
 \def\chapter{\cleardoublepage
- \thispagestyle{plain}
+ \thispagestyle{plain} % Uses the redefined plain style below
  \global\@topnum\z@
  \@afterindentfalse
  \secdef\@chapter\@schapter}
@@ -356,28 +429,27 @@
  \addtocontents{lof}{\protect\addvspace{\baselineskip}}
  \addtocontents{lot}{\protect\addvspace{\baselineskip}}
  \if@twocolumn
- \@topnewpage[\@makechapterhead{#2}]
+ \@topnewpage[\@makechapterhead{#2}]  
  \else \@makechapterhead{#2}
  \@afterheading
  \fi}
 
 \def\@schapter#1{\if@twocolumn \@topnewpage[\@makeschapterhead{#1}]
- \else \@makeschapterhead{#1}
+ \else \@makeschapterhead{#1} 
  \@afterheading\fi}
 
-\def\section{\@startsection{section}{1}{\z@}{-3.25ex plus -1ex minus
+% -- Section Heading Fonts --
+\def\section{\@startsection{section}{1}{\z@}{-3.25ex plus -1ex minus 
  -.2ex}{1.5ex plus .2ex}{\large\bf}}
-\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus 
  -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
-\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus 
  -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
 \def\paragraph{\@startsection
  {paragraph}{4}{\z@}{3.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
 \def\subparagraph{\@startsection
- {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus
+ {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus 
  .2ex}{-1em}{\normalsize\bf}}
-
-\def\chaptermark#1{}
 
 \setcounter{secnumdepth}{2}
 
@@ -387,43 +459,81 @@
  \def\@chapapp{Appendix}
  \def\thechapter{\Alph{chapter}}}
 
+% -- Page Styles (FancyHDR) --
+\RequirePackage{fancyhdr}
+
+% Set the default page style
+\pagestyle{fancy}
+\fancyhf{} % Clear all headers and footers to start
+
+% Define Header Content
 \if@twoside
-\def\ps@headings{%
-  \let\@mkboth\markboth
-  \def\@oddfoot{}
-  \def\@evenfoot{}
-  \def\@evenhead{\rm \thepage\hfil \sl \leftmark}
-  \def\@oddhead{\hbox{}\sl \rightmark \hfil \rm\thepage}
-  \def\chaptermark##1{\markboth {\uppercase{\ifnum \c@secnumdepth >\m@ne
-        \@chapapp\ \thechapter. \ \fi ##1}}{}}
-  \def\sectionmark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\z@
-        \thesection. \ \fi ##1}}}}
+  % Double-sided: Page # on outer edges, Chapter/Section inner
+  \fancyhead[RO,LE]{\thepage}
+  \fancyhead[RE]{\slshape\leftmark}
+  \fancyhead[LO]{\slshape\rightmark}
 \else
-\def\ps@headings{%
-  \let\@mkboth\markboth
-  \def\@oddfoot{}\def\@evenfoot{}
-  \def\@oddhead{\hbox {}\hfil \rm\thepage}
-  \def\chaptermark##1{\markright {\uppercase{\ifnum \c@secnumdepth >\m@ne
-        \@chapapp\ \thechapter. \ \fi ##1}}}}
+  % Single-sided: Page # Right, Chapter/Section Left
+  \fancyhead[R]{\thepage}
+  \fancyhead[L]{\slshape\rightmark}
 \fi
 
-\def\ps@myheadings{\let\@mkboth\@gobbletwo
-\def\@oddhead{\hbox{}\sl\rightmark \hfil \rm\thepage}
-\def\@oddfoot{}\def\@evenhead{\rm \thepage\hfil\sl\leftmark\hbox {}}
-\def\@evenfoot{}\def\chaptermark##1{}\def\sectionmark##1{}
-\def\subsectionmark##1{}}
+% Remove the horizontal rule (line) from the header
+\renewcommand{\headrulewidth}{0pt}
 
-\ps@headings
-\onecolumn
-\if@twoside\else\raggedbottom\fi
+% Redefine 'plain' style (used on Chapter title pages)
+% Rice usually requires page numbers to remain top-right even on new chapters
+\fancypagestyle{plain}{%
+  \fancyhf{} % Clear all
+  \if@twoside
+    \fancyhead[RO,LE]{\thepage}
+  \else
+    \fancyhead[R]{\thepage}
+  \fi
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% Fix for headheight warning in modern LaTeX
+\setlength{\headheight}{15pt}
 
 \pagenumbering{roman}
-\def\thefootnote{\arabic{footnote}}
+\def\thefootnote{\fnsymbol{footnote}}
 
-%
-% Put all page numbers in the upper-right.
-% Graduate Studies thinks that the page number at the bottom-center
-% is too close to the bottom of the page.
-%
-\let\ps@plain\ps@headings
+% -------------------------------------------------------------------------
+% 10. CONTENT EXTENSIONS (Epigraphs, Code, Theorems)
+% -------------------------------------------------------------------------
 
+% -- Epigraphs (Quotes) --
+\RequirePackage{epigraph}
+\setlength{\epigraphwidth}{0.6\textwidth} 
+\renewcommand{\epigraphflush}{flushright} 
+\renewcommand{\sourceflush}{flushright}   
+\renewcommand{\textflush}{flushright}     
+\renewcommand{\epigraphsize}{\small\itshape}
+\RequirePackage{multicol}
+
+% -- Code Listings --
+\RequirePackage{listings}
+
+% -- Theorems (TColorBox) --
+\RequirePackage{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+
+\tcbset{
+    commonstyle/.style={
+        colback=white,
+        colframe=RiceGray,
+        fonttitle=\bfseries,
+        breakable
+    }
+}
+
+\newtcbtheorem[number within=section]{definition}{Definition}{commonstyle}{def}
+\newtcbtheorem[number within=section]{theorem}{Theorem}{commonstyle}{thm}
+\newtcbtheorem[number within=section]{example}{Example}{commonstyle}{ex}
+\newtcbtheorem[number within=section]{lemma}{Lemma}{commonstyle}{lem}
+\newtcbtheorem[number within=section]{corollary}{Corollary}{commonstyle}{cor}
+\newtcbtheorem[number within=section]{remark}{Remark}{commonstyle}{rmk}
+\newtcbtheorem[number within=section]{proposition}{Proposition}{commonstyle}{prop}
+
+\endinput
