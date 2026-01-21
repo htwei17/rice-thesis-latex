@@ -12,14 +12,14 @@
 %%% COPYRIGHT:
 %%%    (c) 1995-2026 Rice University
 %%%    (c) 1995 Jan Erik Odegard
-%%%    (c) 2017 DaoWen
+%%%    (c) 2017 Nick Vrvilo
 %%%    (c) 2026 Hao-Tian Wei
 %%%
 %%% HISTORY:
 %%%    1995/11/21: Original port from Rice Thesis style to LaTeX2e (Odegard).
-%%%    2017/03/01: PDFLaTeX support, and file restructuring (DaoWen).
+%%%    2017/03/01: PDFLaTeX support, and file restructuring (Vrvilo).
 %%%    2026/01/20: Major refactor for XeLaTeX, BibLaTeX,
-%%%                Chinese font support, and cleanup.
+%%%                Chinese font support, and cleanup (Wei).
 %%% =========================================================================
 
 \NeedsTeXFormat{LaTeX2e}[1994/12/01]
