@@ -6,24 +6,18 @@
 %%%    Jan Erik Odegard <odegard@ece.rice.edu> (Rice ECE, 1995)
 %%%
 %%% CONTRIBUTORS & MAINTAINERS:
-%%%    Nick Vrvilo (2017) - GitHub: https://github.com/DaoWen/rice-thesis-latex
-%%%    Hao-Tian Wei (2026) - Modernization for XeLaTeX & BibLaTeX
+%%%    Nick Vrvilo <nick.vrvilo@alumni.rice.edu> (2017)
+%%%    Hao-Tian Wei (2026)
 %%%
 %%% COPYRIGHT:
 %%%    (c) 1995-2026 Rice University
 %%%    (c) 1995 Jan Erik Odegard
-%%%    (c) 2017 Nick Vrvilo
-%%%    (c) 2026 Hao-Tian Wei
-%%%
-%%% HISTORY:
-%%%    1995/11/21: Original port from Rice Thesis style to LaTeX2e (Odegard).
-%%%    2017/03/01: PDFLaTeX support, and file restructuring (Vrvilo).
-%%%    2026/01/20: Major refactor for XeLaTeX, BibLaTeX,
-%%%                Chinese font support, and cleanup (Wei).
+%%%    (c) 2017 Nick Vrvilo (Significant Refactoring)
+%%%    (c) 2026 Hao-Tian Wei (Support for XeLaTeX/BibLaTeX & Design Changes)
 %%% =========================================================================
 
-\NeedsTeXFormat{LaTeX2e}[1994/12/01]
-\ProvidesClass{ruthesis}[2026/01/20 v2.0 Modernized Rice Thesis Class]
+\NeedsTeXFormat{LaTeX2e}[2017/05/15 Thesis Class, Computer Science, Rice University, nv4]
+\ProvidesClass{ruthesis}[2026/01/20 v2.0 Rice Thesis Class]
 
 % -------------------------------------------------------------------------
 % 1. OPTION HANDLING
