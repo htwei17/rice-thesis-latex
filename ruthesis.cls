@@ -7,17 +7,17 @@
 %%%
 %%% CONTRIBUTORS & MAINTAINERS:
 %%%    Nick Vrvilo <nick.vrvilo@alumni.rice.edu> (2017)
-%%%    Hao-Tian Wei (2026)
+%%%    Hao-Tian Wei <htwei@rice.edu> (2026)
 %%%
 %%% COPYRIGHT:
 %%%    (c) 1995-2026 Rice University
-%%%    (c) 1995 Jan Erik Odegard
-%%%    (c) 2017 Nick Vrvilo (Significant Refactoring)
+%%%    (c) 1995 Jan Erik Odegard (LaTeX)
+%%%    (c) 2017 Nick Vrvilo (Significant Refactoring & Port to LaTeX2e)
 %%%    (c) 2026 Hao-Tian Wei (Support for XeLaTeX/BibLaTeX & Design Changes)
 %%% =========================================================================
 
-\NeedsTeXFormat{LaTeX2e}[2017/05/15 Thesis Class, Computer Science, Rice University, nv4]
-\ProvidesClass{ruthesis}[2026/01/20 v2.0 Rice Thesis Class]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{ruthesis}[2026/01/20 Rice Thesis Class, Physics, Hao-Tian Wei]
 
 % -------------------------------------------------------------------------
 % 1. OPTION HANDLING
