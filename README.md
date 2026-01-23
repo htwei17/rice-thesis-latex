@@ -1,24 +1,70 @@
-# Rice University Thesis Template (LaTeX)
+# Rice University Thesis Template (2026 Version)
 
-## Building via the command line
+**A clean, modern LaTeX template for Rice University PhD and Master's theses.**
 
-There are several tools for automatically compiling LaTeX projects into PDFs.
-We recommend building the thesis PDF using `latexmk`,
-which comes with most TexLive distributions.
+This is a "hard fork" and modernization of the [legacy Rice LaTeX template](https://github.com/DaoWen/rice-thesis-latex), compatible with **XeLaTeX** engine, enabling support for system fonts, proper Unicode (including optional CJK characters), and compressed citation indices via **BibLaTeX**.
 
-### Build
+---
 
-    latexmk -pdf thesis_main.tex
+## 🛠️ Usage
 
-### Clean
+### Option 1: Overleaf (Recommended)
+1.  Find this project on Overleaf Templates.
+2.  **Crucial Step:** Click the **Menu** button (top-left).
+3.  Change **Compiler** from `pdfLaTeX` to **`XeLaTeX`**.
+4.  Click **Recompile**.
 
-    latexmk -c thesis_main.tex
+### Option 2: Local Installation
+You need a TeX distribution (TeX Live, MacTeX, or MiKTeX) installed. We recommend using `latexmk` to automate the build process.
 
-## LaTeX Editors
+**Build Command:**
+```bash
+latexmk -xelatex main.tex
+```
 
-If you want a full writing environment for LaTeX,
-try [TeXstudio](http://www.texstudio.org/).
+**Clean Build Files:**
+```bash
+latexmk -c
+```
 
-If you prefer a cloud-based solution (no installation necessary),
-try [Overleaf](https://www.overleaf.com/).
+---
 
+## ⚙️ Configuration
+
+### Class Options
+You can pass options to the document class in `main.tex`:
+
+```latex
+% Standard setup
+\documentclass[12pt]{ruthesis}
+
+% Enable CJK font support (requires Fandol fonts or system fonts)
+\documentclass[cjk]{ruthesis}
+
+% Disable citation compression (e.g., show [1], [2] instead of [1-2])
+\documentclass[nocompress]{ruthesis}
+```
+
+### Thesis Metadata
+Edit the `main.tex` file to set your personal information. The template handles the formatting automatically.
+
+```latex
+\title{Your Thesis Title}
+\author{Your Name}
+\department{Physical and Astronomy}
+\degree{Doctor of Philosophy}
+% ... see main.tex for Committee members
+```
+
+---
+
+## 📜 Credits
+
+**Authors & Maintainers:**
+* [Hao-Tian Wei](https://github.com/htwei17)
+* [Nick Vrvilo](https://github.com/DaoWen) (Significant Refactoring & LaTeX2e Modernization)
+* Jan Erik Odegard (Original Creation)
+
+**Copyright:** © 1995-2026 Rice University / Respective Authors & Maintainers.
+
+This template is provided "as is" to help Rice University students. It is not an official product of the Rice University Office of Graduate and Postdoctoral Studies (GPS), though it is designed to meet their formatting guidelines. The authors provide no guarantee regarding strict adherence to current or future university formatting regulations, immunity from any compilation errors or crashes, or data integrity.
