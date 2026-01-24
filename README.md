@@ -1,4 +1,4 @@
-# Rice University Thesis Template (2026 Version)
+# Rice University Thesis Template
 
 **A clean, modern LaTeX template for Rice University PhD and Master's theses.**
 
