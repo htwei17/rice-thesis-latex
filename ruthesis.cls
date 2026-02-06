@@ -49,16 +49,16 @@
 
 % Modern Line Spacing
 \RequirePackage{setspace}
-\doublespacing 
+\doublespacing
 \def\linespacing#1{\setstretch{#1}}
 
 % Modern Margins
 \RequirePackage{geometry}
 \geometry{
-    letterpaper,
-    margin=1in,         
-    bindingoffset=0.5in,
-    headheight=15pt     
+  letterpaper,
+  margin=1in,
+  bindingoffset=0.5in,
+  headheight=15pt
 }
 
 % -------------------------------------------------------------------------
@@ -88,53 +88,60 @@
 
 % Subfigures (Modern Replacement)
 % 'subfigure' is obsolete. 'subcaption' is the modern standard.
-\RequirePackage{subcaption} 
+\RequirePackage{subcaption}
 
 % -------------------------------------------------------------------------
 % 4. TYPOGRAPHY & FONTS (XeLaTeX specific)
 % -------------------------------------------------------------------------
-\RequirePackage{fontspec}        
-\RequirePackage{microtype}      
+\RequirePackage{fontspec}
+\RequirePackage{microtype}
 
 % -- Main English Font --
 \setmainfont{TeX Gyre Termes}
 % Alternative: \setmainfont{Times New Roman}
 
-
 % -- Chinese Font Settings --
 % Load Chinese font if the [cjk] option is passed
 \if@usecjk
-  \RequirePackage{xeCJK}
-  \setCJKmainfont[
-      BoldFont={FandolHei-Regular}, 
-      ItalicFont={FandolKai-Regular}
-  ]{FandolSong-Regular}
+\RequirePackage{xeCJK}
+% Best default CJK fonts for portability (bundled with TeX Live): Fandol family.
+% - Serif/body: FandolSong
+% - Sans:       FandolHei
+% - Mono:       FandolFang (used for \texttt)
+% - Italic:     FandolKai
+\setCJKmainfont[
+  BoldFont={FandolHei-Regular},
+  ItalicFont={FandolKai-Regular},
+  Scale=MatchLowercase
+]{FandolSong-Regular}
+\setCJKsansfont[Scale=MatchLowercase]{FandolHei-Regular}
+\setCJKmonofont[Scale=MatchLowercase]{FandolFang-Regular}
 \fi
 
 % -------------------------------------------------------------------------
 % 5. BIBLIOGRAPHY (BibLaTeX)
 % -------------------------------------------------------------------------
-% Logic: Default is Compressed (numeric-comp). 
+% Logic: Default is Compressed (numeric-comp).
 % If 'nocompress' is passed, use standard numeric.
 
 \if@compresscitations
-  % IEEE style uses 'numeric-comp' internally. 
-  % We explicitly force citestyle to numeric-comp to guarantee [1-3].
-  \RequirePackage[
-      backend=biber,
-      style=ieee,         
-      citestyle=numeric-comp, % FORCE COMPRESSION
-      natbib=true,       
-      sorting=none       
-  ]{biblatex}
+% IEEE style uses 'numeric-comp' internally.
+% We explicitly force citestyle to numeric-comp to guarantee [1-3].
+\RequirePackage[
+  backend=biber,
+  style=ieee,
+  citestyle=numeric-comp, % FORCE COMPRESSION
+  natbib=true,
+  sorting=none
+]{biblatex}
 \else
-  % Verbose style [1], [2], [3]
-  \RequirePackage[
-      backend=biber,
-      style=numeric,     
-      natbib=true,       
-      sorting=none       
-  ]{biblatex}
+% Verbose style [1], [2], [3]
+\RequirePackage[
+  backend=biber,
+  style=numeric,
+  natbib=true,
+  sorting=none
+]{biblatex}
 \fi
 
 % Fix line spacing for the bibliography (Single spaced)
@@ -144,10 +151,13 @@
 % 6. HYPERLINKS & COLORS
 % -------------------------------------------------------------------------
 \RequirePackage[
-    pdfusetitle,       
-    bookmarksnumbered, 
-    hidelinks          
+  pdfusetitle,
+  bookmarksnumbered,
+  hidelinks
 ]{hyperref}
+
+% Cleveref must be loaded AFTER hyperref
+\RequirePackage[nameinlink,capitalise]{cleveref}
 
 \definecolor{DeepTeal}{rgb}{0.0, 0.52, 0.43}   % Deep Teal
 % Official Rice University Colors
@@ -155,11 +165,11 @@
 \definecolor{RiceGray}{HTML}{7C7E7F}
 
 \hypersetup{
-    colorlinks=true,
-    linkcolor=RiceBlue,
-    citecolor=DeepTeal,
-    urlcolor=magenta,
-    filecolor=cyan
+  colorlinks=true,
+  linkcolor=RiceBlue,
+  citecolor=DeepTeal,
+  urlcolor=magenta,
+  filecolor=cyan
 }
 
 % -------------------------------------------------------------------------
@@ -186,14 +196,14 @@
 \def\@coverart{\includegraphics[width=4.5cm, keepaspectratio]{logos/RiceUStackedVertical_BLUE.pdf}}
 \def\@degree{Doctor of Philosophy} % or Master of Science
 \def\@committee{
-    Committee Chair Name, Chair \\ Chair Title \and
-    Committee Member 1 \\ Title \and
-    Committee Member 2 \\ Title
+  Committee Chair Name, Chair \\ Chair Title \and
+  Committee Member 1 \\ Title \and
+  Committee Member 2 \\ Title
 }
 \def\@address{Houston, Texas}
 \def\@month{\ifcase\month ?\or January\or February\or March\or April\or
- May\or June\or July\or August\or September\or October\or
- November\or December\fi}
+  May\or June\or July\or August\or September\or October\or
+November\or December\fi}
 \def\@year{\number\year}
 
 % Logos and Graphics
@@ -240,47 +250,48 @@
 
 % Title Page
 \def\maketitle{%
-\begin{titlepage}
-  \null\linespacing{1}\setcounter{page}{1}\vfill
-  \vbox to 0pt{\vss\vbox to 8.75in{\parskip 0pt \parindent 0pt\centering
-      {\large \uppercase\expandafter{\@school} \par} \vskip 0pt plus 3fil
-      {\Large \bf \@title \par} \vskip 0pt plus 1.3fil
-      {\large by \par} \vskip 0pt plus 1fil
-      {\large \bf \@author \par} \vskip 0pt plus 3fil
-      {\large \sc A Thesis Submitted \\
-        in Partial Fulfillment of the \\
+  \begin{titlepage}
+    \null\linespacing{1}\setcounter{page}{1}\vfill
+    \vbox to 0pt{\vss\vbox to 8.75in{\parskip 0pt \parindent 0pt\centering
+        {\large \uppercase\expandafter{\@school} \par} \vskip 0pt plus 3fil
+        {\Large \bf \@title \par} \vskip 0pt plus 1.3fil
+        {\large by \par} \vskip 0pt plus 1fil
+        {\large \bf \@author \par} \vskip 0pt plus 3fil
+        {\large \sc A Thesis Submitted \\
+          in Partial Fulfillment of the \\
         Requirements for the Degree \par} \vskip 0pt plus 1.1fil
-      {\large \bf \@degree \par} \vskip 0pt plus 4.5fil
-      \begingroup
-      \leftskip .5\textwidth \rightskip 0pt plus 1fil
-      {\sc Approved, Thesis Committee: \par} \vskip 2.5em
-      \moveright\leftskip\vbox{\hrule width \leftskip}
-      \def\and{\par \vskip 2.25em minus 1em\moveright\leftskip%
+        {\large \bf \@degree \par} \vskip 0pt plus 4.5fil
+        \begingroup
+        \leftskip .5\textwidth \rightskip 0pt plus 1fil
+        {\sc Approved, Thesis Committee: \par} \vskip 2.5em
+        \moveright\leftskip\vbox{\hrule width \leftskip}
+        \def\and{\par \vskip 2.25em minus 1em\moveright\leftskip%
         \vbox{\hrule width \leftskip}}
-      \@committee \par
-      \endgroup \vskip 0pt plus 2fil
-      {\large \@address \par} \vskip 0pt plus .8fil
-      {\large \@month, \@year \par}}}\cleardoublepage
+        \@committee \par
+        \endgroup \vskip 0pt plus 2fil
+        {\large \@address \par} \vskip 0pt plus .8fil
+    {\large \@month, \@year \par}}}\cleardoublepage
 \end{titlepage}}
 
 % Abstract
 \def\abstract{\cleardoublepage \pagestyle{empty} \global\@topnum\z@
- \@afterindentfalse \begingroup
- \def \baselinestretch{1.7} \parskip \z@ \parindent \z@ \par
- \null \centering {{\center{ABSTRACT}}} \vskip .4in
-\@title \vskip .4in  by \vskip .4in \@author \vskip .4in \par
-\endgroup \setcounter
- {footnote}{0}\def\thefootnote{\fnsymbol{footnote}}\addcontentsline
- {toc}{frontmatter}{\protect\numberline {\hfil}Abstract}}
+  \@afterindentfalse \begingroup
+  \def \baselinestretch{1.7} \parskip \z@ \parindent \z@ \par
+  \null \centering {{\center{ABSTRACT}}} \vskip .4in
+  \@title \vskip .4in  by \vskip .4in \@author \vskip .4in \par
+  \endgroup \setcounter
+  {footnote}{0}\def\thefootnote{\fnsymbol{footnote}}\addcontentsline
+{toc}{frontmatter}{\protect\numberline {}Abstract}}
 
 \def\endabstract{\setcounter{footnote}{0}
-  \pagestyle{plain}\thispagestyle{empty}}
+\pagestyle{plain}\thispagestyle{empty}}
 
 % Acknowledgments
-\def\acknowledge{\chapter*{Acknowledgments}\thispagestyle{empty}
- \setcounter{footnote}{0}
- \addcontentsline{toc}{frontmatter}{\protect\numberline
- {\hfil}Acknowledgments}}
+\def\acknowledge{
+  \chapter*{Acknowledgments}\thispagestyle{empty}
+  \setcounter{footnote}{0}
+  \addcontentsline{toc}{frontmatter}{\protect\numberline
+{}Acknowledgments}}
 \def\endacknowledge{\setcounter{footnote}{0}}
 
 % Dedications
@@ -289,9 +300,9 @@
   \thispagestyle{empty}
   \vspace*{\fill}
   \begin{center}
-  \itshape
-}
-\def\enddedication{
+    \itshape
+  }
+  \def\enddedication{
   \end{center}
   \vspace*{\fill}
   \cleardoublepage
@@ -299,24 +310,28 @@
 
 % Publications
 \def\publications{
-  \cleardoublepage             
-  \chapter*{List of Publications} 
-  \thispagestyle{plain}        
-  \addcontentsline{toc}{frontmatter}{\protect\numberline{\hfil}List of Publications}
+  \cleardoublepage
+  \chapter*{List of Publications}
+  \thispagestyle{plain}
+  \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Publications}
 }
 \def\endpublications{\par\vfil\newpage}
 
 % Preface
-\def\preface{\chapter*{Preface} \thispagestyle{empty}
- \setcounter{footnote}{0}
- \addcontentsline{toc}{frontmatter}{\protect\numberline
- {\hfil}Preface}}
+\def\preface{
+  \chapter*{Preface} \thispagestyle{empty}
+  \setcounter{footnote}{0}
+  \addcontentsline{toc}{frontmatter}{\protect\numberline
+{}Preface}}
 \def\endpreface{\setcounter{footnote}{0}}
 
 % General Frontmatter Utilities
+% hyperref needs a bookmark level for custom ToC entry types.
+% We use the same level as chapters (0) for "frontmatter".
+\providecommand*{\toclevel@frontmatter}{0}
 \def\frontmatter{\relax}
 \def\endfrontmatter{\cleardoublepage
-  \pagenumbering{arabic}\def\thefootnote{\arabic{footnote}}}
+\pagenumbering{arabic}\def\thefootnote{\arabic{footnote}}}
 
 % -------------------------------------------------------------------------
 % 8. TABLE OF CONTENTS & LISTS FORMATTING
@@ -327,35 +342,36 @@
 \setcounter{tocdepth}{2}
 
 \def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}} \thispagestyle{empty}
- \@starttoc{toc}\if@restonecol\twocolumn\fi}
+  \fi
+  \chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}} \thispagestyle{empty}
+\@starttoc{toc}\if@restonecol\twocolumn\fi}
 
 \def\l@part#1#2{\addpenalty{-\@highpenalty}
- \addvspace{2.25em plus 1pt}
- \begingroup
- \@tempdima 3em
- \parindent \z@ \rightskip \@pnumwidth
- \parfillskip -\@pnumwidth    
- {\large \bf
- \leavevmode
- #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
- \nobreak
- \endgroup}
+  \addvspace{2.25em plus 1pt}
+  \begingroup
+  \@tempdima 3em
+  \parindent \z@ \rightskip \@pnumwidth
+  \parfillskip -\@pnumwidth
+  {\large \bf
+    \leavevmode
+  #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
+  \nobreak
+\endgroup}
 
-\def\l@chapter#1#2{\pagebreak[3] 
- \vskip 1.0em plus 1pt
- \@tempdima 1.5em
- \begingroup
- \parindent \z@ \rightskip \@pnumwidth 
- \parfillskip -\@pnumwidth 
- \parskip \z@
- \large \bf
- \leavevmode
- \advance\leftskip\@tempdima
- \hskip -\leftskip
- #1\nobreak\hfil \nobreak\hbox to\@pnumwidth{\hss #2}\par
- \endgroup}
- 
+\def\l@chapter#1#2{\pagebreak[3]
+  \vskip 1.0em plus 1pt
+  \@tempdima 1.5em
+  \begingroup
+  \parindent \z@ \rightskip \@pnumwidth
+  \parfillskip -\@pnumwidth
+  \parskip \z@
+  \large \bf
+  \leavevmode
+  \advance\leftskip\@tempdima
+  \hskip -\leftskip
+  #1\nobreak\hfil \nobreak\hbox to\@pnumwidth{\hss #2}\par
+\endgroup}
+
 \def\l@section{\@dottedtocline{1}{1.5em}{2.3em}}
 \def\l@subsection{\@dottedtocline{2}{3.8em}{3.2em}}
 \def\l@subsubsection{\@dottedtocline{3}{7.0em}{4.1em}}
@@ -363,29 +379,31 @@
 \def\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
 
 \def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{Illustrations\@mkboth
- {ILLUSTRATIONS}{ILLUSTRATIONS}} \thispagestyle{empty}
- \addcontentsline{toc}{frontmatter}{\protect\numberline
- {\hfil}List of Illustrations}\@starttoc{lof}\if@restonecol
- \twocolumn\fi}
+  \fi
+  \chapter*{Illustrations\@mkboth
+  {ILLUSTRATIONS}{ILLUSTRATIONS}} \thispagestyle{empty}
+  \addcontentsline{toc}{frontmatter}{\protect\numberline
+  {}List of Illustrations}\@starttoc{lof}\if@restonecol
+\twocolumn\fi}
 
 \def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
 
 \def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{Tables\@mkboth
- {TABLES}{TABLES}} \thispagestyle{empty}
- \addcontentsline{toc}{frontmatter}{\protect\numberline
- {\hfil}List of Tables}\@starttoc{lot}\if@restonecol
- \twocolumn\fi}
+  \fi
+  \chapter*{Tables\@mkboth
+  {TABLES}{TABLES}} \thispagestyle{empty}
+  \addcontentsline{toc}{frontmatter}{\protect\numberline
+  {}List of Tables}\@starttoc{lot}\if@restonecol
+\twocolumn\fi}
 
 \let\l@table\l@figure
 
 \def\l@frontmatter#1#2{\pagebreak[3]
- \@tempdima 1.5em \begingroup
- \parindent \z@ \rightskip \@pnumwidth 
- \parfillskip -\@pnumwidth 
- \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}\par
- \endgroup}
+  \@tempdima 1.5em \begingroup
+  \parindent \z@ \rightskip \@pnumwidth
+  \parfillskip -\@pnumwidth
+  \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}\par
+\endgroup}
 
 % Captions spacing fix
 \renewcommand{\fnum@figure}{Figure \thefigure \linespacing{1}}
@@ -397,61 +415,65 @@
 
 % -- Chapter Heading Formatting --
 \def\@makechapterhead#1{\begingroup
- \def \baselinestretch{1} \parskip \z@ \parindent \z@ \par
- \Large\bf \null \vskip 1.5ex \centering
- \ifnum \c@secnumdepth >\m@ne \@chapapp~\thechapter \vskip 3.5ex \fi
- #1 \vskip 3ex plus .2ex\endgroup}
+  \def \baselinestretch{1} \parskip \z@ \parindent \z@ \par
+  \Large\bf \null \vskip 1.5ex \centering
+  \ifnum \c@secnumdepth >\m@ne \@chapapp~\thechapter \vskip 3.5ex \fi
+#1 \vskip 3ex plus .2ex\endgroup}
 
 \def\@makeschapterhead#1{\begingroup
- \def \baselinestretch{1} \parskip \z@ \parindent \z@ \par
- \null \vskip .3in \centering
- \Large \bf #1\par \endgroup \nobreak \vskip .6in\relax}
+  \def \baselinestretch{1} \parskip \z@ \parindent \z@ \par
+  \null \vskip .3in \centering
+\Large \bf #1\par \endgroup \nobreak \vskip .6in\relax}
 
-\def\chapter{\cleardoublepage
- \thispagestyle{plain} % Uses the redefined plain style below
- \global\@topnum\z@
- \@afterindentfalse
- \secdef\@chapter\@schapter}
+\def
+\chapter{\cleardoublepage
+  \thispagestyle{plain} % Uses the redefined plain style below
+  \global\@topnum\z@
+  \@afterindentfalse
+\secdef\@chapter\@schapter}
 
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
- \refstepcounter{chapter}
- \typeout{\@chapapp\space\thechapter.}
- \addcontentsline{toc}{chapter}{\protect
- \numberline{\thechapter}#1}\else
- \addcontentsline{toc}{chapter}{#1}\fi
- \chaptermark{#1}
- \addtocontents{lof}{\protect\addvspace{\baselineskip}}
- \addtocontents{lot}{\protect\addvspace{\baselineskip}}
- \if@twocolumn
- \@topnewpage[\@makechapterhead{#2}]  
- \else \@makechapterhead{#2}
- \@afterheading
- \fi}
+  \refstepcounter{chapter}
+  \typeout{\@chapapp\space\thechapter.}
+  \addcontentsline{toc}{chapter}{\protect
+  \numberline{\thechapter}#1}\else
+  \addcontentsline{toc}{chapter}{#1}\fi
+  \chaptermark{#1}
+  \addtocontents{lof}{\protect\addvspace{\baselineskip}}
+  \addtocontents{lot}{\protect\addvspace{\baselineskip}}
+  \if@twocolumn
+  \@topnewpage[\@makechapterhead{#2}]
+  \else \@makechapterhead{#2}
+  \@afterheading
+\fi}
 
 \def\@schapter#1{\if@twocolumn \@topnewpage[\@makeschapterhead{#1}]
- \else \@makeschapterhead{#1} 
- \@afterheading\fi}
+  \else \@makeschapterhead{#1}
+\@afterheading\fi}
 
 % -- Section Heading Fonts --
-\def\section{\@startsection{section}{1}{\z@}{-3.25ex plus -1ex minus 
- -.2ex}{1.5ex plus .2ex}{\large\bf}}
-\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus 
- -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
-\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus 
- -1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def
+\section{\@startsection{section}{1}{\z@}{-3.25ex plus -1ex minus
+-.2ex}{1.5ex plus .2ex}{\large\bf}}
+\def
+\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus -1ex minus
+-.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def
+\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus
+-1ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
 \def\paragraph{\@startsection
- {paragraph}{4}{\z@}{3.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
+{paragraph}{4}{\z@}{3.25ex plus 1ex minus .2ex}{-1em}{\normalsize\bf}}
 \def\subparagraph{\@startsection
- {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus 
- .2ex}{-1em}{\normalsize\bf}}
+  {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus
+.2ex}{-1em}{\normalsize\bf}}
 
 \setcounter{secnumdepth}{2}
 
 \def\appendix{\par
- \setcounter{chapter}{0}
- \setcounter{section}{0}
- \def\@chapapp{Appendix}
- \def\thechapter{\Alph{chapter}}}
+  \setcounter{chapter}{0}
+  \setcounter{section}{0}
+  \def\@chapapp{Appendix}
+\def\thechapter{\Alph{chapter}}}
 
 % -- Page Styles (FancyHDR) --
 \RequirePackage{fancyhdr}
@@ -462,14 +484,14 @@
 
 % Define Header Content
 \if@twoside
-  % Double-sided: Page # on outer edges, Chapter/Section inner
-  \fancyhead[RO,LE]{\thepage}
-  \fancyhead[RE]{\slshape\leftmark}
-  \fancyhead[LO]{\slshape\rightmark}
+% Double-sided: Page # on outer edges, Chapter/Section inner
+\fancyhead[RO,LE]{\thepage}
+\fancyhead[RE]{\slshape\leftmark}
+\fancyhead[LO]{\slshape\rightmark}
 \else
-  % Single-sided: Page # Right, Chapter/Section Left
-  \fancyhead[R]{\thepage}
-  \fancyhead[L]{\slshape\rightmark}
+% Single-sided: Page # Right, Chapter/Section Left
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\slshape\rightmark}
 \fi
 
 % Remove the horizontal rule (line) from the header
@@ -480,9 +502,9 @@
 \fancypagestyle{plain}{%
   \fancyhf{} % Clear all
   \if@twoside
-    \fancyhead[RO,LE]{\thepage}
+  \fancyhead[RO,LE]{\thepage}
   \else
-    \fancyhead[R]{\thepage}
+  \fancyhead[R]{\thepage}
   \fi
   \renewcommand{\headrulewidth}{0pt}
 }
@@ -499,10 +521,10 @@
 
 % -- Epigraphs (Quotes) --
 \RequirePackage{epigraph}
-\setlength{\epigraphwidth}{0.6\textwidth} 
-\renewcommand{\epigraphflush}{flushright} 
-\renewcommand{\sourceflush}{flushright}   
-\renewcommand{\textflush}{flushright}     
+\setlength{\epigraphwidth}{0.6\textwidth}
+\renewcommand{\epigraphflush}{flushright}
+\renewcommand{\sourceflush}{flushright}
+\renewcommand{\textflush}{flushright}
 \renewcommand{\epigraphsize}{\small\itshape}
 \RequirePackage{multicol}
 
@@ -514,12 +536,12 @@
 \tcbuselibrary{theorems, skins, breakable}
 
 \tcbset{
-    commonstyle/.style={
-        colback=white,
-        colframe=RiceGray,
-        fonttitle=\bfseries,
-        breakable
-    }
+  commonstyle/.style={
+    colback=white,
+    colframe=RiceGray,
+    fonttitle=\bfseries,
+    breakable
+  }
 }
 
 \newtcbtheorem[number within=section]{definition}{Definition}{commonstyle}{def}
@@ -529,5 +551,21 @@
 \newtcbtheorem[number within=section]{corollary}{Corollary}{commonstyle}{cor}
 \newtcbtheorem[number within=section]{remark}{Remark}{commonstyle}{rmk}
 \newtcbtheorem[number within=section]{proposition}{Proposition}{commonstyle}{prop}
+
+% Fix cleveref names for tcolorbox theorem counters (newtcbtheorem)
+\crefname{tcb@cnt@definition}{Def}{Defs}
+\Crefname{tcb@cnt@definition}{Definition}{Definitions}
+\crefname{tcb@cnt@theorem}{Thm}{Thms}
+\Crefname{tcb@cnt@theorem}{Theorem}{Theorems}
+\crefname{tcb@cnt@example}{Ex}{Exs}
+\Crefname{tcb@cnt@example}{Example}{Examples}
+\crefname{tcb@cnt@lemma}{Lem}{Lems}
+\Crefname{tcb@cnt@lemma}{Lemma}{Lemmas}
+\crefname{tcb@cnt@corollary}{Cor}{Cors}
+\Crefname{tcb@cnt@corollary}{Corollary}{Corollaries}
+\crefname{tcb@cnt@remark}{Rem}{Rems}
+\Crefname{tcb@cnt@remark}{Remark}{Remarks}
+\crefname{tcb@cnt@proposition}{Prop}{Props}
+\Crefname{tcb@cnt@proposition}{Proposition}{Propositions}
 
 \endinput
