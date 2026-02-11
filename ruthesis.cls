@@ -568,4 +568,20 @@ November\or December\fi}
 \crefname{tcb@cnt@proposition}{Prop}{Props}
 \Crefname{tcb@cnt@proposition}{Proposition}{Propositions}
 
+% -----------------------------------------------------------------------------
+% 11. CUSTOM MACROS AND SHORTCUTS
+% -----------------------------------------------------------------------------
+
+% Physics/Math Shorthands
+\newcommand{\blank}{\,&}
+\newcommand{\innerprod}[2]{\langle #1 \vert #2 \rangle}
+\newcommand{\expval}[1]{\langle#1\rangle}
+\newcommand{\triplet}[0]{{}^{3}P_{2}}
+\newcommand{\fig}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\eq}[1]{Eq.~\eqref{eq:#1}}
+\newcommand{\sect}[1]{Sec.~\ref{sec:#1}}
+
+% Annotations
+\newcommand{\note}[1]{\textbf{\textcolor{DeepTeal}{**#1**}}}
+
 \endinput
