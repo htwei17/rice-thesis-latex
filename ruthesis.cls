@@ -144,6 +144,21 @@
 ]{biblatex}
 \fi
 
+% -------------------------------------------------------------------------
+% Bibliography cleanup:
+% For entries with a DOI, suppress URL and access date.
+% This keeps journal articles compact while preserving DOI information.
+% -------------------------------------------------------------------------
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map{
+      \step[fieldsource=doi, final]
+      \step[fieldset=url, null]
+      \step[fieldset=urldate, null]
+    }
+  }
+}
+
 % Fix line spacing for the bibliography (Single spaced)
 \AtBeginBibliography{\linespacing{1}}
 
