@@ -82,6 +82,7 @@
 
 % Graphics & Colors
 \RequirePackage{xcolor}  % Replaces 'color'
+\RequirePackage{soul}    % Provides \hl for highlighted annotations
 \RequirePackage{graphicx}% Replaces 'epsfig', 'epsf', 'graphics'
 \RequirePackage{rotating}% For rotated figures/tables
 \RequirePackage{textcomp}% Extra symbols
