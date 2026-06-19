@@ -485,11 +485,15 @@ November\or December\fi}
 
 \setcounter{secnumdepth}{2}
 
-\def\appendix{\par
-  \setcounter{chapter}{0}
-  \setcounter{section}{0}
-  \def\@chapapp{Appendix}
-\def\thechapter{\Alph{chapter}}}
+% -- Appendix handling --
+% Preserve the command already configured by report, hyperref, and cleveref.
+\let\ruthesis@appendix\appendix
+
+\renewcommand{\appendix}{%
+  \ruthesis@appendix
+  % Chapters created after \appendix are appendix references.
+  \crefalias{chapter}{appendix}%
+}
 
 % -- Page Styles (FancyHDR) --
 \RequirePackage{fancyhdr}
