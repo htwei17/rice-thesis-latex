@@ -493,6 +493,9 @@ November\or December\fi}
   \ruthesis@appendix
   % Chapters created after \appendix are appendix references.
   \crefalias{chapter}{appendix}%
+  \crefalias{section}{subappendix}%
+  \crefalias{subsection}{subsubappendix}%
+  \crefalias{subsubsection}{subsubsubappendix}%
 }
 
 % -- Page Styles (FancyHDR) --
