@@ -290,43 +290,35 @@ November\or December\fi}
 \end{titlepage}}
 
 % Abstract
-\def\abstract{\cleardoublepage \pagestyle{empty} \global\@topnum\z@
+\def\abstract{
+  \cleardoublepage
+  \phantomsection
+  \addcontentsline{toc}{frontmatter}{\protect\numberline{}Abstract}
+  \pagestyle{empty} \global\@topnum\z@
   \@afterindentfalse \begingroup
   \def \baselinestretch{1.7} \parskip \z@ \parindent \z@ \par
   \null \centering {{\center{ABSTRACT}}} \vskip .4in
   \@title \vskip .4in  by \vskip .4in \@author \vskip .4in \par
   \endgroup \setcounter
-  {footnote}{0}\def\thefootnote{\fnsymbol{footnote}}\addcontentsline
-{toc}{frontmatter}{\protect\numberline {}Abstract}}
+  {footnote}{0}\def\thefootnote{\fnsymbol{footnote}}
+}
 
 \def\endabstract{\setcounter{footnote}{0}
 \pagestyle{plain}\thispagestyle{empty}}
 
 % Acknowledgments
 \def\acknowledge{
+  \phantomsection
   \chapter*{Acknowledgments}\thispagestyle{empty}
   \setcounter{footnote}{0}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline
-{}Acknowledgments}}
-\def\endacknowledge{\setcounter{footnote}{0}}
-
-% Dedications
-\def\dedication{
-  \cleardoublepage
-  \thispagestyle{empty}
-  \vspace*{\fill}
-  \begin{center}
-    \itshape
-  }
-  \def\enddedication{
-  \end{center}
-  \vspace*{\fill}
-  \cleardoublepage
+  \addcontentsline{toc}{frontmatter}{\protect\numberline{}Acknowledgments}
 }
+\def\endacknowledge{\setcounter{footnote}{0}}
 
 % Publications
 \def\publications{
   \cleardoublepage
+  \phantomsection
   \chapter*{List of Publications}
   \thispagestyle{plain}
   \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Publications}
@@ -335,11 +327,25 @@ November\or December\fi}
 
 % Preface
 \def\preface{
-  \chapter*{Preface} \thispagestyle{empty}
+  \chapter*{Preface}\phantomsection \thispagestyle{empty}
   \setcounter{footnote}{0}
   \addcontentsline{toc}{frontmatter}{\protect\numberline
 {}Preface}}
 \def\endpreface{\setcounter{footnote}{0}}
+
+% Dedications
+\def\dedication{
+  \cleardoublepage
+  \thispagestyle{empty}
+  \vspace*{\fill}
+  \begin{center}
+  \itshape
+}
+\def\enddedication{
+  \end{center}
+  \vspace*{\fill}
+  \cleardoublepage
+}
 
 % General Frontmatter Utilities
 % hyperref needs a bookmark level for custom ToC entry types.
@@ -357,10 +363,11 @@ November\or December\fi}
 \def\@dotsep{4.5}
 \setcounter{tocdepth}{2}
 
-\def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
-  \fi
-  \chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}} \thispagestyle{empty}
-\@starttoc{toc}\if@restonecol\twocolumn\fi}
+\def\tableofcontents{\@restonecolfalse
+  \if@twocolumn\@restonecoltrue\onecolumn\fi
+  \chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}}\pdfbookmark[0]{Contents}{tableofcontents}\thispagestyle{empty}
+  \@starttoc{toc}\if@restonecol\twocolumn\fi
+}
 
 \def\l@part#1#2{\addpenalty{-\@highpenalty}
   \addvspace{2.25em plus 1pt}
@@ -394,20 +401,18 @@ November\or December\fi}
 \def\l@paragraph{\@dottedtocline{4}{10em}{5em}}
 \def\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
 
-\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
-  \fi
-  \chapter*{Illustrations\@mkboth
-  {ILLUSTRATIONS}{ILLUSTRATIONS}} \thispagestyle{empty}
+\def\listoffigures{\@restonecolfalse
+  \if@twocolumn\@restonecoltrue\onecolumn\fi
+  \chapter*{Illustrations\@mkboth{ILLUSTRATIONS}{ILLUSTRATIONS}}\phantomsection\thispagestyle{empty}
   \addcontentsline{toc}{frontmatter}{\protect\numberline
   {}List of Illustrations}\@starttoc{lof}\if@restonecol
 \twocolumn\fi}
 
 \def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
 
-\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
-  \fi
-  \chapter*{Tables\@mkboth
-  {TABLES}{TABLES}} \thispagestyle{empty}
+\def\listoftables{\@restonecolfalse
+  \if@twocolumn\@restonecoltrue\onecolumn\fi
+  \chapter*{Tables\@mkboth{TABLES}{TABLES}}\phantomsection\thispagestyle{empty}
   \addcontentsline{toc}{frontmatter}{\protect\numberline
   {}List of Tables}\@starttoc{lot}\if@restonecol
 \twocolumn\fi}
