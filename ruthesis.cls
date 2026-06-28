@@ -22,9 +22,14 @@
 % -------------------------------------------------------------------------
 % 1. OPTION HANDLING
 % -------------------------------------------------------------------------
+% Toggle for appendix labels in the table of contents
+\newif\if@appendixtocprefix
+\@appendixtocprefixfalse
+\DeclareOption{appendixtocprefix}{\@appendixtocprefixtrue}
+
 % Toggle for citation compression
 \newif\if@compresscitations
-\@compresscitationstrue % DEFAULT IS NOW TRUE (Compressed: [1-3])
+\@compresscitationstrue % DEFAULT IS TRUE (Compressed: [1-3])
 
 % Toggle for CJK support
 \newif\if@usecjk
@@ -306,31 +311,44 @@ November\or December\fi}
 \def\endabstract{\setcounter{footnote}{0}
 \pagestyle{plain}\thispagestyle{empty}}
 
-% Acknowledgments
-\def\acknowledge{
+% Front matter chapter format
+\def\ruthesis@frontmatterchapter#1#2#3#4{%
+  \cleardoublepage
   \phantomsection
-  \chapter*{Acknowledgments}\thispagestyle{empty}
-  \setcounter{footnote}{0}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline{}Acknowledgments}
+  #4%
+  \thispagestyle{#3}%
+  \global\@topnum\z@
+  \@afterindentfalse
+  \@mkboth{#2}{#2}%
+  \if@twocolumn
+    \@topnewpage[\@makeschapterhead{#1}]%
+  \else
+    \@makeschapterhead{#1}%
+    \@afterheading
+  \fi
+}
+
+% Acknowledgments
+\def\acknowledge{%
+  \ruthesis@frontmatterchapter{Acknowledgments}{ACKNOWLEDGMENTS}{empty}{%
+    \addcontentsline{toc}{frontmatter}{\protect\numberline{}Acknowledgments}}%
+  \setcounter{footnote}{0}%
 }
 \def\endacknowledge{\setcounter{footnote}{0}}
 
 % Publications
-\def\publications{
-  \cleardoublepage
-  \phantomsection
-  \chapter*{List of Publications}
-  \thispagestyle{plain}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Publications}
+\def\publications{%
+  \ruthesis@frontmatterchapter{List of Publications}{LIST OF PUBLICATIONS}{plain}{%
+    \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Publications}}%
 }
 \def\endpublications{\par\vfil\newpage}
 
 % Preface
-\def\preface{
-  \chapter*{Preface}\phantomsection \thispagestyle{empty}
-  \setcounter{footnote}{0}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline
-{}Preface}}
+\def\preface{%
+  \ruthesis@frontmatterchapter{Preface}{PREFACE}{empty}{%
+    \addcontentsline{toc}{frontmatter}{\protect\numberline{}Preface}}%
+  \setcounter{footnote}{0}%
+}
 \def\endpreface{\setcounter{footnote}{0}}
 
 % Dedications
@@ -365,7 +383,8 @@ November\or December\fi}
 
 \def\tableofcontents{\@restonecolfalse
   \if@twocolumn\@restonecoltrue\onecolumn\fi
-  \chapter*{Contents\@mkboth{CONTENTS}{CONTENTS}}\pdfbookmark[0]{Contents}{tableofcontents}\thispagestyle{empty}
+  \ruthesis@frontmatterchapter{Contents}{CONTENTS}{empty}{%
+    \pdfbookmark[0]{Contents}{tableofcontents}}%
   \@starttoc{toc}\if@restonecol\twocolumn\fi
 }
 
@@ -395,6 +414,20 @@ November\or December\fi}
   #1\nobreak\hfil \nobreak\hbox to\@pnumwidth{\hss #2}\par
 \endgroup}
 
+\def\l@appendixchapter#1#2{\pagebreak[3]
+  \vskip 1.0em plus 1pt
+  \@tempdima 7em
+  \begingroup
+  \parindent \z@ \rightskip \@pnumwidth
+  \parfillskip -\@pnumwidth
+  \parskip \z@
+  \large \bf
+  \leavevmode
+  \advance\leftskip\@tempdima
+  \hskip -\leftskip
+  #1\nobreak\hfil \nobreak\hbox to\@pnumwidth{\hss #2}\par
+\endgroup}
+
 \def\l@section{\@dottedtocline{1}{1.5em}{2.3em}}
 \def\l@subsection{\@dottedtocline{2}{3.8em}{3.2em}}
 \def\l@subsubsection{\@dottedtocline{3}{7.0em}{4.1em}}
@@ -403,19 +436,19 @@ November\or December\fi}
 
 \def\listoffigures{\@restonecolfalse
   \if@twocolumn\@restonecoltrue\onecolumn\fi
-  \chapter*{Illustrations\@mkboth{ILLUSTRATIONS}{ILLUSTRATIONS}}\phantomsection\thispagestyle{empty}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline
-  {}List of Illustrations}\@starttoc{lof}\if@restonecol
-\twocolumn\fi}
+  \ruthesis@frontmatterchapter{Illustrations}{ILLUSTRATIONS}{empty}{%
+    \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Illustrations}}%
+  \@starttoc{lof}\if@restonecol\twocolumn\fi
+}
 
 \def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
 
 \def\listoftables{\@restonecolfalse
   \if@twocolumn\@restonecoltrue\onecolumn\fi
-  \chapter*{Tables\@mkboth{TABLES}{TABLES}}\phantomsection\thispagestyle{empty}
-  \addcontentsline{toc}{frontmatter}{\protect\numberline
-  {}List of Tables}\@starttoc{lot}\if@restonecol
-\twocolumn\fi}
+  \ruthesis@frontmatterchapter{Tables}{TABLES}{empty}{%
+    \addcontentsline{toc}{frontmatter}{\protect\numberline{}List of Tables}}%
+  \@starttoc{lot}\if@restonecol\twocolumn\fi
+}
 
 \let\l@table\l@figure
 
@@ -456,8 +489,10 @@ November\or December\fi}
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
   \refstepcounter{chapter}
   \typeout{\@chapapp\space\thechapter.}
-  \addcontentsline{toc}{chapter}{\protect
-  \numberline{\thechapter}#1}\else
+  % \addcontentsline{toc}{chapter}{\protect
+  % \numberline{\thechapter}#1}
+  \ruthesis@chaptertocentry{#1}
+  \else
   \addcontentsline{toc}{chapter}{#1}\fi
   \chaptermark{#1}
   \addtocontents{lof}{\protect\addvspace{\baselineskip}}
@@ -496,11 +531,34 @@ November\or December\fi}
 
 \renewcommand{\appendix}{%
   \ruthesis@appendix
+  \@ruthesisappendixtrue
   % Chapters created after \appendix are appendix references.
   \crefalias{chapter}{appendix}%
   \crefalias{section}{subappendix}%
   \crefalias{subsection}{subsubappendix}%
   \crefalias{subsubsection}{subsubsubappendix}%
+}
+
+% Track whether later chapters are appendices
+\newif\if@ruthesisappendix
+\@ruthesisappendixfalse
+
+% hyperref bookmark level for custom appendix ToC entries
+\providecommand*{\toclevel@appendixchapter}{0}
+
+\def\ruthesis@chaptertocentry#1{%
+  \if@appendixtocprefix
+    \if@ruthesisappendix
+      \addcontentsline{toc}{appendixchapter}{%
+        \protect\numberline{\@chapapp~\thechapter}#1}%
+    \else
+      \addcontentsline{toc}{chapter}{%
+        \protect\numberline{\thechapter}#1}%
+    \fi
+  \else
+    \addcontentsline{toc}{chapter}{%
+      \protect\numberline{\thechapter}#1}%
+  \fi
 }
 
 % -- Page Styles (FancyHDR) --
